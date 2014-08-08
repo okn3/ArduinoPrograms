@@ -26,3 +26,6 @@
 * _Distance_Sound：距離検知、距離で判断して音を鳴らす
 * _Distance_Move_Detect:動体検知っぽいやつ
 * _Distance_Move_Servo:動体検知でポテトヘッドか振り向く
+
+* raspberryとシリアル通信
+_arduino_serial_pi
