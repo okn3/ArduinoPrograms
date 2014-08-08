@@ -8,14 +8,16 @@
 
 #define trigPin 8
 #define echoPin 9
-const int speakerPin = 11;
+//const int trigPin = 8;
+//const int echoPin = 9;
+//const int speakerPin = 11;
 int tmp;
 
 void setup() {
   Serial.begin (9600);
   pinMode(trigPin, OUTPUT);
   pinMode(echoPin, INPUT);
-  pinMode(speakerPin, OUTPUT);
+//  pinMode(speakerPin, OUTPUT);
   
 }
 
@@ -28,23 +30,23 @@ void loop() {
   //読み込み
   duration = pulseIn(echoPin, HIGH);
   distance = (duration/2) / 29.1;
+  
+String s = String(distance);
 
   
 //例外処理
   if (distance >= 400 || distance <= 0){
-    Serial.write(0);
+    Serial.write("0");
   }
+//判定
   else if(distance <= 80){
-    Serial.write(1);
+    Serial.write("1");
+    digitalWrite(trigPin, HIGH);
     delay(5000);
-    Serial.write(0);
+    Serial.write("0");
   }else{
-    Serial.write(0);
+    Serial.write("0");
   }
-  
-//    Serial.print("distance:"); 
-//    Serial.print(distance);
-//    Serial.println(" cm");
-// Serial.println("----------------------");
+
   delay(1000);
 }
