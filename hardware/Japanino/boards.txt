@@ -1,0 +1,20 @@
+##############################################################
+
+japanino.name=Gakken Japanino 
+
+japanino.upload.protocol=arduino
+japanino.upload.maximum_size=14336
+japanino.upload.speed=19200
+
+japanino.bootloader.low_fuses=0xc6
+japanino.bootloader.high_fuses=0xdd
+japanino.bootloader.extended_fuses=0x00
+japanino.bootloader.path=arduino:atmega
+japanino.bootloader.file=ATmegaBOOT_168_pro_8MHz.hex
+japanino.bootloader.unlock_bits=0x3F
+japanino.bootloader.lock_bits=0x0F
+
+japanino.build.mcu=atmega168
+japanino.build.f_cpu=8000000L
+japanino.build.core=arduino:arduino
+japanino.build.variant=arduino:eightanaloginputs
