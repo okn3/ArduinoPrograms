@@ -1,3 +1,13 @@
+//LEDキューブと超音波距離センサの連携
+
+/*距離センサの設定*/
+#define TRIGPIN 12
+#define ECHOPIN 13
+#define CTM 19
+
+int dur;
+float dis;
+  
 /* led num */
 int ledNum = 3;
 
@@ -25,7 +35,13 @@ long rand1;
 long rand2;
 long randGND;
 
+
 void setup() {
+  
+  Serial.begin(9600);
+  pinMode(TRIGPIN,OUTPUT);
+  pinMode(ECHOPIN,INPUT);
+  
   for(int i = 0; i < ledNum; i++) {
     for(int j = 0; j < ledNum; j++) {
       pinMode(vs[i][j], OUTPUT);
@@ -37,17 +53,20 @@ void setup() {
 
 //パターンの選択
 void loop() {
-  for(int i = 0;i<9; i++){
-   pattern1();
-  }
-  for(int i = 0;i<3; i++){
-   pattern2();
-  }
-  for(int i = 0;i<3; i++){
-   pattern3();
-  }
-   pattern4(); 
-   pattern5(); 
+  sensing();
+//  if (dis < 10 ){
+//      pattern3(); //階段
+//  }else if(dis >= 10 && dis < 30){
+//      pattern2(); //ぐるぐる
+//  }else{
+//  pattern4();
+//  }
+    
+ //  pattern1(); // ピカピカ
+//   pattern2(); //ぐるぐる
+ //  pattern3(); //階段
+pattern4(); //ランダム
+//   pattern5(); //自作
 }
 
 void pattern1() {
@@ -140,39 +159,69 @@ void pattern3() {
 
 //ランダムで光らす
 void pattern4() {
-  for(int j = 100; j > 0 ; j--){
   randGND=random(3);
   rand1=random(3);
   rand2=random(3);
+  
   cls();
+
     digitalWrite(gnd[randGND], LOW);
 
     digitalWrite(vs[rand1][rand2], HIGH);
-    delay(j);
+    delay(dis);
     digitalWrite(vs[rand1][rand2], LOW);
-    delay(j);
+    delay(dis+100);
+}
+
+//近づいたら早くする
+void pattern5() {
+  cls();
+
+  for(int i=2; i>=0; i--){
+    if(i == 2){
+      digitalWrite(gnd[i], LOW);
+    }else{
+      digitalWrite(gnd[i+1], HIGH);
+      digitalWrite(gnd[i], LOW);
+    }
+
+    digitalWrite(vs[2][2], HIGH);
+    delay(fps);
+
+    digitalWrite(vs[2][2], LOW);
+    digitalWrite(vs[2][1], HIGH);
+    delay(fps);
+
+    digitalWrite(vs[2][1], LOW);
+    digitalWrite(vs[2][0], HIGH);
+    delay(fps);
+
+    digitalWrite(vs[2][0], LOW);
+    digitalWrite(vs[1][0], HIGH);
+    delay(fps);
+
+    digitalWrite(vs[1][0], LOW);
+    digitalWrite(vs[0][0], HIGH);
+    delay(fps);
+
+    digitalWrite(vs[0][0], LOW);
+    digitalWrite(vs[0][1], HIGH);
+    delay(fps);
+
+    digitalWrite(vs[0][1], LOW);
+    digitalWrite(vs[0][2], HIGH);
+    delay(fps);
+
+
+    digitalWrite(vs[0][2], LOW);
+    digitalWrite(vs[1][2], HIGH);
+    delay(fps);
+
+    digitalWrite(vs[1][2], LOW);
   }
 }
-  
- void pattern5(){
-  for(int j = 0; j < 100 ; j++){
-  randGND=random(3);
-  rand1=random(3);
-  rand2=random(3);
-  cls();
-    digitalWrite(gnd[randGND], LOW);
-
-    digitalWrite(vs[rand1][rand2], HIGH);
-    delay(j);
-    digitalWrite(vs[rand1][rand2], LOW);
-    delay(j);
-  }
- }
 
 
-
-
-  
 
 
 void all() {
@@ -191,4 +240,22 @@ void cls() {
     }
     digitalWrite(gnd[i], HIGH);
   }
+}
+void sensing(){
+
+  digitalWrite(TRIGPIN,HIGH);
+  delayMicroseconds(CTM);
+  digitalWrite(TRIGPIN,LOW);
+  dur = pulseIn(ECHOPIN,HIGH);
+  dis = (float) dur*0.017;
+//  Serial.print(dis);
+//  Serial.println("cm");
+  
+  if (dis <= 100){
+    dis = map(dis,0,100,10,200);
+    Serial.println(dis);
+  }else{
+    dis = 300;
+  }
+//  delay(500);
 }
