@@ -4,6 +4,7 @@
  Echo to Arduino pin 9 Trig to Arduino pin 8
  More info at: http://goo.gl/kJ8Gl
  超音波距離センサを使用してpiとシリアル通信を行うよ
+ ゼミ室のドアに設置
  */
 
 #define trigPin 8
