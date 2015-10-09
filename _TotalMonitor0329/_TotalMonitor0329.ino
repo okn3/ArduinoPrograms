@@ -20,7 +20,7 @@ char *json = &trans[0];
 void HumidTemp(){
   int chk = DHT11.read(); 
   delay(100);
-  int humi = (int)DHT11.humidity;
+  int humi = (int)DHT11.humidity+20;//調整+20
   int temp = (int)DHT11.temperature;
   //不快指数の計算
   float fukai = 0.81*temp+0.01*humi*(0.99*temp-14.3)+46.3;
@@ -30,7 +30,7 @@ void HumidTemp(){
   }else if(fukai>80){
     lcd.print("~_~; hot");
   }else if(fukai>75){
-    lcd.print("-_- hot");
+    lcd.print("-_-  hot");
   }else if(fukai>70){
     lcd.print("^-^ good");
   }else if(fukai>65){
